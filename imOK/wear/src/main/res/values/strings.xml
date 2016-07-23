@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">something happend... are you ok?</string>
+    <string name="hello_round">Hello Round World!</string>
+    <string name="hello_square">Hello Square World!</string>
+</resources>
