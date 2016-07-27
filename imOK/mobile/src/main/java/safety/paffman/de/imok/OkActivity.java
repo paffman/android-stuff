@@ -4,6 +4,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class OkActivity extends AppCompatActivity {
 
@@ -22,19 +26,52 @@ public class OkActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ok);
+        setOnClickListener();
+    }
+
+    /**
+     * Adds the onclick function to the button
+     */
+    private void setOnClickListener() {
+        final Button closeBtn = (Button)findViewById(R.id.buttonOk);
+        closeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendMessage();
+            }
+        });
     }
 
     /**
      * Method to trigger E-Mail Message
      */
     private void sendMessage() {
-        Intent intent = new Intent(Intent.ACTION_SENDTO); // it's not ACTION_SEND
-//        Intent intent = new Intent(Intent.ACTION_SEND); // it's not ACTION_SEND
-        intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_SUBJECT, SUBJECT);
-        intent.putExtra(Intent.EXTRA_TEXT, BODY_CONTENT);
-        intent.setData(Uri.parse("mailto:el.paso2384@gmail.com")); // or just "mailto:" for blank
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // this will make such that when user returns to your app, your app is displayed, instead of the email app.
-        startActivity(intent);
+        String[] TO = getEMailAddresses();
+        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+        emailIntent.setData(Uri.parse("mailto:"));
+        //emailIntent.setData(Uri.parse("mailto:el.paso2384@gmail.com"));
+        emailIntent.setType("text/plain");
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, SUBJECT);
+        emailIntent.putExtra(Intent.EXTRA_TEXT, BODY_CONTENT);
+
+        try {
+            startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+            finish();
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(OkActivity.this,
+                    "There is no email client installed.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * reads all entered E-Mail Addresses and uses them as e-mail receipient
+     *
+     * @return
+     */
+    private String[] getEMailAddresses() {
+        final TextView emailText = (TextView) findViewById(R.id.emailAddressText);
+        String allAddresses = emailText.getText().toString();
+        return allAddresses.split(",");
     }
 }

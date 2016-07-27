@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">something happend... are you ok?</string>
+    <string name="button_text">i'm ok!</string>
+    <string name="header_email_addresses">Enter E-Maill Adresses (comma separated)</string>
 </resources>
