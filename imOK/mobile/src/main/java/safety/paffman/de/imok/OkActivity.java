@@ -49,7 +49,6 @@ public class OkActivity extends AppCompatActivity {
         String[] TO = getEMailAddresses();
         Intent emailIntent = new Intent(Intent.ACTION_SEND);
         emailIntent.setData(Uri.parse("mailto:"));
-        //emailIntent.setData(Uri.parse("mailto:el.paso2384@gmail.com"));
         emailIntent.setType("text/plain");
         emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, SUBJECT);
